@@ -1,4 +1,5 @@
-const inquirer = requier("inquirer");
+const filesystem = require("./node_modules/graceful-fs/graceful-fs");
+const inquirer = require("inquirer");
 const { Circle, Square, Triangle } = require("./lib/shapes");
 
 class Svg {
@@ -7,9 +8,7 @@ class Svg {
     this.shapeElement = "";
   }
   render() {
-    return `<svg version="1.1"
-        width="300" height="200"
-        xmlns="http://www.w3.org/2000/svg">${this.shapeElement}${t}`;
+    return `<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">${this.shapeElement}${this.textElement}</svg>`;
   }
   setTextElement(text, color) {
     this.textElement = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`;
@@ -44,8 +43,8 @@ const questions = [
 ];
 
 function writeToFile(fileName, data) {
-  console.log('Writing [" + data + "] to file [" + filename + "]');
-  FileSystem.writeFile(fileName, data, function (err) {
+  console.log('Writing [' + data + '] to file [' + fileName + ']');
+  filesystem.writeFile(fileName, data, function (err) {
     if (err) {
       return console.log(err);
     }
@@ -68,32 +67,29 @@ async function init() {
     );
     return;
   }
-  console.log('User text: [' + user_text + ']');
-  
-  user_font_color = answers['text-color']
-  console.log('User font color: [' + user_font_color + ']')
+  console.log("User text: [" + user_text + "]");
 
-  user_shape_color = answers.shape;
-  console.log('User font color: [' + user_shape_color + ']')
-  
-  user_shape_type = answers['shape']
-  console.log('User font color: [' + user_shape_type + ']')
+  user_font_color = answers["text-color"];
+  console.log("User font color: [" + user_font_color + "]");
+
+  user_shape_color = answers["shape-color"];
+  console.log("User shape color: [" + user_shape_color + "]");
+
+  user_shape_type = answers["shape"];
+  console.log("User shape type: [" + user_shape_type + "]");
 
   let user_shape;
   if (user_shape_type === "Square" || user_shape_type === "square") {
     user_shape = new Square();
-    console.log('User selected square')
-  }
-  else if (user_shape_type === "Circle" || user_shape_type === "circle") {
+    console.log("User selected square");
+  } else if (user_shape_type === "Circle" || user_shape_type === "circle") {
     user_shape = new Circle();
-    console.log('User selected circle')
-  }
-  else if (user_shape_type === "Triangle" || user_shape_type === "triangle") {
+    console.log("User selected circle");
+  } else if (user_shape_type === "Triangle" || user_shape_type === "triangle") {
     user_shape = new Triangle();
-    console.log('User selected triangle')
-  }
-  else {
-    console.log('Invalid shape!')
+    console.log("User selected triangle");
+  } else {
+    console.log("Invalid shape!");
   }
   user_shape.setColor(user_shape_color);
 
@@ -104,8 +100,8 @@ async function init() {
 
   console.log("SVG element string:\n\n" + svgString);
 
-  console.log('Logo Generated!')
-  console.log('Writing svg to file..');
+  console.log("Logo Generated!");
+  console.log("Writing svg to file..");
   writeToFile(svg_file, svgString);
 }
 
