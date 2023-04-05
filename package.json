@@ -1,0 +1,12 @@
+{
+    "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "devDependencies": {
+        "jest": "^29.5.0"
+    },
+    "dependencies": {
+        "inquirer": "^8.2.4"
+    }
+}
